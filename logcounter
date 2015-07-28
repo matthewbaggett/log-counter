@@ -1,0 +1,77 @@
+#!/usr/bin/env php
+<?php
+
+$apacheLog = $argv[1];
+
+$errorLog = file_get_contents($apacheLog);
+
+$logLines = explode("\n", $errorLog);
+
+$buckets = [];
+$pids = [];
+$errors = [];
+
+$apacheDateFormat = "D M d H:i:s.u Y";
+
+$logLinesCount = count($logLines);
+
+echo "Parsing {$logLinesCount} log lines... \n";
+foreach($logLines as $i => $logLine){
+    $percentage = (100/$logLinesCount) * $i;
+    $percentage = number_format($percentage);
+    if(!isset($lastPercentage) || $percentage > $lastPercentage) {
+        $memory = number_format(memory_get_usage() / 1024 / 1024);
+        echo "\r > {$percentage}% {$memory} MB.";
+    }
+    $lastPercentage = $percentage;
+    $elements = explode("]", $logLine);
+    foreach($elements as &$element){
+        $element = str_replace("[", "", $element);
+        $element = trim($element);
+    }
+    if(stripos($logLine, "PHP") !== false) {
+        $line = new StdClass();
+        //Tue Jul 28 07:35:02.340153 2015
+        $dateTime = DateTime::createFromFormat($apacheDateFormat, $elements[0]);
+        $line->time = $dateTime;
+        $line->application = $elements[1];
+        $line->pid = $elements[2];
+
+        if(count($elements) == 4) {
+            $line->error = $elements[3];
+        }elseif(count($elements) == 5){
+            $line->error = $elements[4];
+        }
+
+        // Exclude PHP Stack traces.
+        #echo $logLine . "\n > substr: " . substr($line->error,0,6) . "\n";
+        if(substr($line->error,0,6) != 'PHP   ' && strpos($line->error, 'PHP Stack trace') === false){
+            $pids[$line->pid] = isset($errors[$line->pid]) ? $errors[$line->pid] + 1 : 1;
+            $errors[$line->error] = isset($errors[$line->error]) ? $errors[$line->error] + 1 : 1;
+            $buckets[$line->application][$line->pid][] = $line;
+        }
+    }
+}
+
+asort($errors);
+$errors = array_reverse($errors);
+
+$sortedErrors = [];
+foreach($errors as $errorMessage => $frequency){
+    $sortedErrors[] = ['message' => $errorMessage, 'frequency' => $frequency];
+}
+echo"\n";
+echo"\n";
+
+echo "There were " . count($buckets) . " applications\n";
+echo " > Unique PIDs: " . count($pids) . "\n";
+echo " > Unique Errors: " . count($errors) . "\n";
+echo "\n";
+
+
+$topErrors = array_slice($sortedErrors, 0, 5);
+
+echo "Top errors:\n";
+foreach($topErrors as $error){
+    echo " > ({$error['frequency']} times) {$error['message']}\n";
+}

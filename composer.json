@@ -1,0 +1,13 @@
+{
+    "name": "matthewbaggett/log-counter",
+    "authors": [
+        {
+            "name": "Matthew Baggett",
+            "email": "matthew@baggett.me"
+        }
+    ],
+    "require": {},
+    "bin": [
+        "logcounter"
+    ]
+}
