@@ -1,8 +1,33 @@
 LogCounter
 ==========
 
+A utility for parsing PHP errors inside of the apache log.
+
 Usage:
 
-./logcounter /var/log/apache2/error.log
+`./logcounter /var/log/apache2/error.log`
 
+Output:
 
+```
+bob@bobsmachine ~/Projects/LogCounter $ ./logcounter /var/log/apache2/error.log
+Parsing 5687 log lines...
+ > 100% 5 MB.
+
+There were 2 applications
+ > Unique PIDs: 5
+ > Unique Errors: 116
+ > Total Errors: 1171
+
+Top 10 errors:
+ > 4e7b36a (355 times) PHP Notice:  Undefined index: select_lenders in /app/site/reporting/builder.phtml on line 146, referer: http://app/reporting/main
+ > 8f4d120 (222 times) PHP Notice:  Undefined index: destination_id in /app/site/logs/transaction.phtml on line 32, referer: http://app/logs/proposal
+ > 41dd513 (222 times) PHP Notice:  Undefined index: destination_id in /app/site/logs/all_transactions.phtml on line 32, referer: http://app/logs/transaction
+ > 91dfa3e (42 times) PHP Notice:  Undefined index: select_proposal_status in /app/site/reporting/builder.phtml on line 21, referer: http://app/reporting/main
+ > ad0b26c (18 times) PHP Notice:  Undefined index: destination_status_id in /app/site/logs/transaction.phtml on line 41, referer: http://app/logs/proposal
+ > fe2d36c (18 times) PHP Notice:  Undefined index: destination_status_id in /app/site/logs/all_transactions.phtml on line 41, referer: http://app/logs/transaction
+ > 515b1aa (18 times) PHP Notice:  Undefined index: select_vehicles in /app/site/reporting/builder.phtml on line 181, referer: http://app/reporting/main
+ > b35c842 (9 times) PHP Notice:  Undefined index: bm_user_id in /app/site/main.phtml on line 151, referer: http://app/main
+ > daadf13 (6 times) PHP Notice:  Undefined variable: has_login_quiz_module in /app/layouts/site.php on line 118, referer: http://app/reporting/main
+ > 09f3300 (6 times) PHP Notice:  Undefined index: select_staff in /app/site/reporting/builder.php on line 316, referer: http://app/reporting/main
+```
