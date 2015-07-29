@@ -1,13 +1,24 @@
 {
-    "name": "matthewbaggett/log-counter",
-    "authors": [
-        {
-            "name": "Matthew Baggett",
-            "email": "matthew@baggett.me"
-        }
-    ],
-    "require": {},
-    "bin": [
-        "logcounter"
-    ]
+  "name": "matthewbaggett/log-counter",
+  "authors": [
+    {
+      "name": "Matthew Baggett",
+      "email": "matthew@baggett.me"
+    }
+  ],
+  "require": {},
+  "require-dev": {
+    "phpunit/phpunit": "4.4.*"
+  },
+  "bin": [
+    "logcounter"
+  ],
+  "prefer-stable": true,
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {"LogCounter\\": "src/"}
+  },
+  "autoload-dev": {
+    "psr-4": { "LogCounter\\Tests\\": "tests/" }
+  }
 }
