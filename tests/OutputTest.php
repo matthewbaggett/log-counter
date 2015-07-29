@@ -1,6 +1,6 @@
 <?php
 
-class OutputTest extends PHPUnit_Framework_TestCase
+class OutputTest extends \PHPUnit_Framework_TestCase
 {
 
     /** @var LogCounter\LogCounter */
