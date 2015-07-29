@@ -11,6 +11,10 @@ php:
 before_script :
   - composer install
 
+after_script:
+  - CODECLIMATE_REPO_TOKEN="ce93c841904adb7db21604754a8f17c293c01fc126e658e35b7950759f3f9feb " vendor/bin/test-reporter --stdout > codeclimate.json
+  - "curl -X POST -d @codeclimate.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v0.1.1)' https://codeclimate.com/test_reports"
+
 script: phpunit
 
 notifications:
