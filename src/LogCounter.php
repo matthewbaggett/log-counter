@@ -84,7 +84,7 @@ class LogCounter{
 
         $sortedErrors = array();
         foreach($this->errors as $errorHash => $frequency){
-            $sortedErrors[] = ['hash' => $errorHash, 'frequency' => $frequency];
+            $sortedErrors[] = array('hash' => $errorHash, 'frequency' => $frequency);
         }
 
 
