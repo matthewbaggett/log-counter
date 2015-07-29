@@ -23,10 +23,10 @@ class LogCounter{
 
         $logLines = explode("\n", $errorLog);
 
-        $this->buckets = [];
-        $this->pids = [];
-        $this->errors = [];
-        $this->lines = [];
+        $this->buckets = array();
+        $this->pids = array();
+        $this->errors = array();
+        $this->lines = array();
         $this->errorCount = 0;
 
         $this->logLinesCount = count($logLines);
@@ -68,7 +68,7 @@ class LogCounter{
                     #echo "Hash of \"{$line->error}\" is {$line->hash}\n";
                     $this->pids[$line->pid] = isset($this->errors[$line->pid]) ? $this->errors[$line->pid] + 1 : 1;
                     $this->errors[$line->hash] = isset($this->errors[$line->hash]) ? $this->errors[$line->hash] + 1 : 1;
-                    $this->buckets[$line->application][$line->pid][] = $line;
+                    $this->buckets[$line->application][$line->pid]array() = $line;
 
                     $this->lines[$line->hash] = $line;
                     $this->errorCount++;
@@ -82,9 +82,9 @@ class LogCounter{
         asort($this->errors);
         $this->errors = array_reverse($this->errors);
 
-        $sortedErrors = [];
+        $sortedErrors = array();
         foreach($this->errors as $errorHash => $frequency){
-            $sortedErrors[] = ['hash' => $errorHash, 'frequency' => $frequency];
+            $sortedErrorsarray() = ['hash' => $errorHash, 'frequency' => $frequency];
         }
 
 
